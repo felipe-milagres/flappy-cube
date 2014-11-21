@@ -5,24 +5,16 @@ public class Obstacle : MonoBehaviour {
 
 	private Vector2 _velocity = new Vector2(-3, 0);
 	
-	void Start () {
+	private void Start () {
 		rigidbody2D.velocity = _velocity;
 		transform.position = new Vector3( transform.position.x, NewYPosition(), transform.position.z );
 	}
 
-	void Update () {
-
-		// Remove Obstacle by being off screen
-		/*Vector2 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
-		if (screenPosition.x < -200 ){
-			DestroyObstacle();
-		}*/
-
+	private void Update () {
 		if( transform.position.x < -6 ) DestroyObstacle();
-
 	}
 
-	void DestroyObstacle() {
+	private void DestroyObstacle() {
 		transform.position = new Vector3(6, NewYPosition(), transform.position.z );
 	}
 

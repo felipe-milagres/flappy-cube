@@ -4,18 +4,22 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
 	// The force which is added when the player jumps
-	// This can be changed in the Inspector window
-	private Vector2 _jumpForce = new Vector2(0, 275);
+	private Vector2 _jumpForce;
+	private Score _myScore;
+	private bool _die;
 
-	void onStart(){
+	private void Start() {
+		_jumpForce = new Vector2( 0, 275 );
+		_myScore = gameObject.GetComponent<Score>();
+		_die = false;
 	}
-	
+
 	// Update is called once per frame
-	void Update() {
+	private void Update() {
 
 		#if UNITY_ANDROID
-		foreach (Touch touch in Input.touches) {
-			if (touch.phase == TouchPhase.Began){
+		foreach( Touch touch in Input.touches ){
+			if( touch.phase == TouchPhase.Began ){
 				Jump();
 			}
 		}
@@ -28,28 +32,30 @@ public class Player : MonoBehaviour {
 		#endif
 
 		// Die by being off screen
-		Vector2 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
-		if (screenPosition.y > Screen.height || screenPosition.y < 0){
+		Vector2 screenPosition = Camera.main.WorldToScreenPoint( transform.position );
+		if( screenPosition.y > Screen.height || screenPosition.y < 0 && !_die ){
 			Die();
 		}
 
 	}
 
-	void Jump(){
+	private void Jump(){
 		rigidbody2D.velocity = Vector2.zero;
-		rigidbody2D.AddForce(_jumpForce);
+		rigidbody2D.AddForce( _jumpForce );
 	}
 
 	// Die by collision
-	void OnCollisionEnter2D(Collision2D other){
+	private void OnCollisionEnter2D( Collision2D other ){
 		Die();
 	}
 
-	void OnTriggerEnter2D(Collider2D other) {
-
+	private void OnTriggerEnter2D( Collider2D other ) {
+		_myScore.IncreaseScore();
 	}
 	
-	void Die(){
-		Application.LoadLevel(Application.loadedLevel);
+	private void Die(){
+		_die = true;
+		_myScore.GameOver();
+		//Application.LoadLevel( Application.loadedLevel );
 	}
 }
