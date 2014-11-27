@@ -20,12 +20,11 @@ public class Score : MonoBehaviour {
 	private void OnGUI(){
 		// custon skin { font-family , font-size }
 		GUI.skin = customSkin;
-		// score
 
+		// score
 		GUI.BeginGroup (new Rect (Screen.width/2 - 27,10, 55, 30));
 			GUI.Box (new Rect (0,0,55,30), _score+"");
 		GUI.EndGroup ();
-
 
 		// if games over, "GAME OVER ModalWindow" show up
 		if( _gameOver ){
