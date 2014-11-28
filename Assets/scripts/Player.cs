@@ -10,6 +10,7 @@ public class Player : MonoBehaviour {
 
 	public AudioClip jumpSound;
 	public AudioClip hitSound;
+	public AudioClip increaseScoreSound;
 
 	private void Start() {
 		_jumpForce = new Vector2( 0, 275 );
@@ -59,6 +60,8 @@ public class Player : MonoBehaviour {
 
 	private void OnTriggerEnter2D( Collider2D other ) {
 		_myScore.IncreaseScore();
+		audio.clip = increaseScoreSound;
+		audio.Play();
 	}
 	
 	private void Die(){
