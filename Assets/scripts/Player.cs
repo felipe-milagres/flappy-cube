@@ -8,6 +8,9 @@ public class Player : MonoBehaviour {
 	private Score _myScore;
 	private bool _die;
 
+	public AudioClip jumpSound;
+	public AudioClip hitSound;
+
 	private void Start() {
 		_jumpForce = new Vector2( 0, 275 );
 		_myScore = gameObject.GetComponent<Score>();
@@ -33,7 +36,7 @@ public class Player : MonoBehaviour {
 
 		// Die by being off screen
 		Vector2 screenPosition = Camera.main.WorldToScreenPoint( transform.position );
-		if( screenPosition.y > Screen.height || screenPosition.y < 0 && !_die ){
+		if( ( screenPosition.y > Screen.height || screenPosition.y < 0 ) && !_die ){
 			Die();
 		}
 
@@ -42,6 +45,11 @@ public class Player : MonoBehaviour {
 	private void Jump(){
 		rigidbody2D.velocity = Vector2.zero;
 		rigidbody2D.AddForce( _jumpForce );
+		//jumpSound.Play();
+		if( !_die ) { 
+			audio.clip = jumpSound;
+			audio.Play();
+		}
 	}
 
 	// Die by collision
@@ -56,6 +64,9 @@ public class Player : MonoBehaviour {
 	private void Die(){
 		_die = true;
 		_myScore.GameOver();
+		audio.clip = hitSound;
+		audio.Play();
+		//Camera.main.audio.Stop();
 		//Application.LoadLevel( Application.loadedLevel );
 	}
 }
